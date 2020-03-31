@@ -16,7 +16,6 @@ RUN apk add openssl bash curl bind-tools ca-certificates \
   && chmod 0444 /etc/unbound/root.key \
   && chmod 0444 /etc/unbound/unbound.conf \
   && chmod 0444 /etc/unbound/named.cache \
-  && chmod +x /entrypoint.sh \
   && /usr/sbin/unbound-checkconf
 
 ### Remove curl
