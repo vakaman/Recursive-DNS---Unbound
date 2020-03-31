@@ -3,9 +3,6 @@ FROM alpine:latest
 ### Instala o Unbound / atualiza
 RUN apk --no-cache --update add unbound
 
-### Copia entrypoint para o container
-COPY entrypoint.sh /entrypoint.sh
-
 ### Copia as configurações 
 COPY unbound.conf /etc/unbound/
 
