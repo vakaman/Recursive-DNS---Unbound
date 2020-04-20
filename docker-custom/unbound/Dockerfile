@@ -18,7 +18,11 @@ RUN chown -R unbound:unbound /etc/unbound \
   && chmod 0444 /etc/unbound/unbound.conf \
   && chmod 0444 /etc/unbound/named.cache
 
-RUN  /usr/sbin/unbound-checkconf
+### Check syntax errors
+RUN /usr/sbin/unbound-checkconf
+
+### test if DNSSEC is working
+RUN /usr/sbin/unbound-host -C /etc/unbound/unbound.conf -v sigok.verteiltesysteme.net
 
 ### Remove curl
 RUN apk del curl

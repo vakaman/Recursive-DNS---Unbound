@@ -11,7 +11,7 @@ services:
       - "53:53"
     dns:
       - "127.0.0.1"
-      - ::1
+      - "::1"
     container_name: dns-server
 #    volumes:
 #      - ./logs:/var/log/unbound
