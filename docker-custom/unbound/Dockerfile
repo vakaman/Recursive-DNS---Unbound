@@ -1,12 +1,19 @@
-FROM alpine:3.11
+FROM tiredofit/alpine:3.11
 
-### Instala o Unbound / atualiza
-RUN apk add unbound tzdata 
+### Instala o Unbound / atualiza / unbound tzdata zabbix-agent openrc
+RUN apk add unbound tzdata zabbix-agent openrc
 
 ARG TZ='America/Sao_Paulo'
 
+VOLUME ["/sys/fs/cgroup"]
+
+RUN mkdir /etc/zabbix/zabbix_agentd.d
+
 ### Copia as configurações 
 COPY unbound.conf /etc/unbound/
+COPY zabbix_agent.conf /etc/zabbix/zabbix_agentd.conf
+COPY zabbix_agent-sudoers /etc/sudoers.d/zabbix-agent
+COPY userparameter_unbound.conf /etc/zabbix/zabbix_agentd.d/
 
 ### Instala dependencias / Cria pastas / Modifica permissoes
 RUN apk add sudo openssl bash curl bind-tools ca-certificates dnstop zabbix-agent
@@ -35,6 +42,10 @@ RUN /usr/sbin/unbound-checkconf
 
 ### test if DNSSEC is working
 RUN /usr/sbin/unbound-host -C /etc/unbound/unbound.conf -v internic.net
+
+RUN rc-update add zabbix-agentd
+
+#RUN /etc/init.d/zabbix-agentd start
 
 ### Remove curl / tzdata
 RUN apk del curl tzdata

@@ -7,6 +7,7 @@ services:
     networks:
       - back
     ports:
+      - "10050:10050"
       - "53:53/udp"
       - "53:53"
     dns:
