@@ -42,8 +42,6 @@ RUN chmod 0444 /etc/unbound/root.key \
   && chmod 0444 /etc/unbound/unbound.conf \
   && chmod 0444 /etc/unbound/named.cache
 
-RUN /usr/sbin/unbound-control-setup -d /etc/unbound
-
 ### test if DNSSEC is working
 RUN /usr/sbin/unbound-host -C /etc/unbound/unbound.conf -v internic.net
 
