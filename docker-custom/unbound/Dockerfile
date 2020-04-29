@@ -7,13 +7,13 @@ ARG TZ='America/Sao_Paulo'
 
 VOLUME ["/sys/fs/cgroup"]
 
-RUN mkdir /etc/zabbix/zabbix_agentd.conf.d
+RUN mkdir /etc/zabbix/zabbix_agentd.d
 
 ### Copia as configurações 
 COPY unbound.conf /etc/unbound/
 COPY zabbix_agent.conf /etc/zabbix/zabbix_agentd.conf
 COPY zabbix_agent-sudoers /etc/sudoers.d/zabbix-agent
-COPY userparameter_unbound.conf /etc/zabbix/zabbix_agentd.conf.d/
+COPY userparameter_unbound.conf /etc/zabbix/zabbix_agentd.d/
 
 ### Instala dependencias / Cria pastas / Modifica permissoes
 RUN apk add sudo openssl bash curl bind-tools ca-certificates dnstop zabbix-agent
