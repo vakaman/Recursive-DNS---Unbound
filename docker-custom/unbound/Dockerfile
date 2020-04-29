@@ -26,6 +26,12 @@ RUN /usr/sbin/unbound-anchor -a /etc/unbound/root.key | true
 RUN touch /etc/unbound/unbound.log \
   && cp /usr/share/zoneinfo/${TZ} /etc/localtime
 
+### Generate keys
+RUN /usr/sbin/unbound-control-setup -d /etc/unbound 
+
+### Check syntax errors
+RUN /usr/sbin/unbound-checkconf
+
 ### Chown
 RUN chown -R unbound:unbound /etc/unbound \
   && chown -R unbound:unbound /etc/unbound/root.key \
@@ -35,10 +41,8 @@ RUN chown -R unbound:unbound /etc/unbound \
 RUN chmod 0444 /etc/unbound/root.key \
   && chmod 0444 /etc/unbound/unbound.conf \
   && chmod 0444 /etc/unbound/named.cache
-  
 
-### Check syntax errors
-RUN /usr/sbin/unbound-checkconf
+RUN /usr/sbin/unbound-control-setup -d /etc/unbound
 
 ### test if DNSSEC is working
 RUN /usr/sbin/unbound-host -C /etc/unbound/unbound.conf -v internic.net
