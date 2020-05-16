@@ -1,26 +1,23 @@
 version: "3.7"
 services:
-  dns:
+
+  dns: ### DNS-SERVER
+    container_name: dns-server
+    hostname: ns1.local.com
     restart:
       on-failure
     build: docker-custom/unbound
     networks:
-      - back
+      default:
+        aliases:
+          - ns1.local.com  ## Set Alias
     ports:
-      - "10050:10050"
       - "53:53/udp"
       - "53:53"
     dns:
       - "127.0.0.1"
       - "::1"
-    container_name: dns-server
-#    volumes:
-#      - ./logs:/var/log/unbound
-
-networks:
-  back:
-    name: net-dns
-    driver: bridge
-
-volumes:
-  db-my-data:
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
